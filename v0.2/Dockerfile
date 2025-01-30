@@ -1,23 +1,12 @@
 # Use the official Ubuntu base image
-FROM ubuntu:latest
+FROM alpine:latest
 
-# Set environment variables to avoid interactive prompts during package installation
-ENV DEBIAN_FRONTEND=noninteractive
+# Serring up the enviroment
+RUN apk update
+RUN apk add wget curl gnupg tar unzip git openjdk8-jdk	
+RUN apk add --no-cache libc6-compat
 
-# Update and install essential packages
-RUN apt-get update -y && apt-get install -y \
-    wget \
-    curl \
-    gnupg \
-    tar \
-    unzip \
-    git \
-    nano \
-	default-jre \
-	default-jdk \
-    && rm -rf /var/lib/apt/lists/*
-
-# # Install Scala
+# Install Scala
 RUN curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > /usr/local/bin/cs && chmod +x /usr/local/bin/cs \
     && /usr/local/bin/cs install scala:2.12.20 && /usr/local/bin/cs install scalac:2.12.20
 
