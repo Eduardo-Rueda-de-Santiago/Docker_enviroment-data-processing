@@ -1,0 +1,2 @@
+docker build -t enviroment-data-processing . 
+docker run --volume "C:/Users/eduar/OneDrive - U-tad/UTAD/Tercer año/Segundo cuatrimestre/Procesamiento de Datos/Scala:/Shared" enviroment-data-processing:latest tail -f /dev/null

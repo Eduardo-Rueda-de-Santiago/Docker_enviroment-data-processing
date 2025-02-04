@@ -1,7 +1,7 @@
 Aplicaciones instaladas:
 
 - Scala: versión 2.12.20
-- Spark: todavía no
+- Spark: versión 3.5.4
 - Hadoop: todavía no
 - Kafka: todavía no
 - Casandra: todavía no

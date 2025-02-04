@@ -17,8 +17,9 @@ RUN wget https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3-scal
 
 	
 # Set up the enviroment
-ENV PATH="$PATH:/root/.local/share/coursier/bin:$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin"
+ENV SCALA_HOME=/root/.local/share/coursier
 ENV SPARK_HOME=/opt/spark
+ENV PATH="$PATH:$SCALA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin"
 
 # # Install Apache Hadoop
 # RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.3/hadoop-3.3.3.tar.gz && \
