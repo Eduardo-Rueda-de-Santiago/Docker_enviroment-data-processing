@@ -3,7 +3,7 @@ FROM alpine:3.21.2
 
 # Setting up the enviroment
 RUN apk update
-RUN apk add --no-cache coreutils procps wget curl gnupg tar unzip git bash openjdk8-jdk libc6-compat
+RUN apk add --no-cache coreutils procps wget curl tar bash openjdk8-jdk libc6-compat
 
 # Install Scala
 RUN curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > /usr/local/bin/cs && chmod +x /usr/local/bin/cs \
@@ -24,7 +24,8 @@ RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.3/hadoop-3.3.3.ta
 # Set up the enviroment
 ENV SCALA_HOME=/root/.local/share/coursier
 ENV SPARK_HOME=/opt/spark
-ENV PATH="$PATH:$SCALA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin"
+ENV HADOOP_HOME=/opt/hadoop
+ENV PATH="$PATH:$SCALA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$HADOOP_HOME/sbin"
 
 
 
