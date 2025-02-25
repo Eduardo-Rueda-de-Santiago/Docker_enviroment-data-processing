@@ -31,10 +31,10 @@ RUN wget https://dlcdn.apache.org/kafka/3.9.0/kafka_2.13-3.9.0.tgz && \
 	mv /opt/kafka_2.13-3.9.0 /opt/kafka
 
 # Install Cassandra
-RUN wget https://downloads.apache.org/cassandra/4.0.0/apache-cassandra-4.0.0-bin.tar.gz && \
-    tar -xvzf apache-cassandra-4.0.0-bin.tar.gz -C /opt/ && \
-    rm apache-cassandra-4.0.0-bin.tar.gz && \
-    mv /opt/apache-cassandra-4.0.0 /opt/cassandra
+RUN wget https://downloads.apache.org/cassandra/4.1.8/apache-cassandra-4.1.8-bin.tar.gz && \
+    tar -xvzf apache-cassandra-4.1.8-bin.tar.gz -C /opt/ && \
+    rm apache-cassandra-4.1.8-bin.tar.gz && \
+    mv /opt/apache-cassandra-4.1.8 /opt/cassandra
 
 # Set up the enviroment
 ENV JAVA_HOME=/usr
@@ -47,7 +47,7 @@ ENV CASSANDRA_HOME=/opt/cassandra
 ENV PATH="$PATH:$JAVA_HOME/bin:$SCALA_HOME:$SPARK_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$KAFKA_HOME/bin:$CASSANDRA_HOME/bin"
 
 # Expose necessary ports (you can add more depending on the configuration)
-EXPOSE 9870
+EXPOSE 9870 9042 36753 7299 7000
 
 # Start Cassandra as the default entrypoint
 CMD ["bash"]
