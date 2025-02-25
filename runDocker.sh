@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build the Docker image
-docker build -t eduardoruedadesantiago/enviroment-data-processing ./v0.2
+docker build -t eduardoruedadesantiago/enviroment-data-processing ./v0.3
 
 # Run the container with the specified volume
 docker run --volume "C:/Users/eduar/OneDrive - U-tad/UTAD/Tercer año/Segundo cuatrimestre/Procesamiento de Datos/Scala:/Shared" eduardoruedadesantiago/enviroment-data-processing:latest tail -f /dev/null

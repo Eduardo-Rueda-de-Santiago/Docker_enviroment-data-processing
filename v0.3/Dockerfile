@@ -6,26 +6,31 @@ RUN apk update
 RUN apk add --no-cache coreutils procps wget curl tar bash openjdk8-jdk libc6-compat
 
 # Install Scala
-RUN curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > /usr/local/bin/cs && chmod +x /usr/local/bin/cs \
-    && /usr/local/bin/cs install scala:2.13.16 && /usr/local/bin/cs install scalac:2.13.16
+RUN mkdir /opt/scala && \
+	curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > /opt/scala/cs && \
+	chmod +x /opt/scala/cs && \
+	/opt/scala/cs install scala:2.13.16 --install-dir /opt/scala && \
+	/opt/scala/cs install scalac:2.13.16 --install-dir /opt/scala
 
 # Install Apache Spark
 RUN wget https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3-scala2.13.tgz && \
     tar -xzf spark-3.5.4-bin-hadoop3-scala2.13.tgz -C /opt/ && \
-    rm  spark-3.5.4-bin-hadoop3-scala2.13.tgz && \
-    ln -s /opt/spark-3.5.4-bin-hadoop3-scala2.13 /opt/spark
+    rm spark-3.5.4-bin-hadoop3-scala2.13.tgz && \
+    mv /opt/spark-3.5.4-bin-hadoop3-scala2.13 /opt/spark
 
-# # Install Apache Hadoop
-RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.3/hadoop-3.3.3.tar.gz && \
-	tar -xvzf hadoop-3.3.3.tar.gz -C /opt/ && \
-	rm hadoop-3.3.3.tar.gz && \
-	ln -s /opt/hadoop-3.3.3 /opt/hadoop
+# Install Apache Hadoop
+RUN wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.tar.gz && \
+	tar -xvzf hadoop-3.4.1.tar.gz-C /opt/ && \
+	rm hadoop-3.4.1.tar.gz && \
+	mv -s /opt/hadoop-3.4.1 /opt/hadoop && \
+	adduser -D -u 1000 hadoop
 	
 # Set up the enviroment
-ENV SCALA_HOME=/root/.local/share/coursier
+ENV SCALA_HOME=/opt/scala
 ENV SPARK_HOME=/opt/spark
 ENV HADOOP_HOME=/opt/hadoop
-ENV PATH="$PATH:$SCALA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$HADOOP_HOME/sbin"
+ENV JAVA_HOME=/usr
+ENV PATH="$PATH:$SCALA_HOME:$SPARK_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin"
 
 
 
@@ -48,8 +53,8 @@ ENV PATH="$PATH:$SCALA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$HADOOP_HOME/sb
 # ENV CASSANDRA_HOME=/opt/cassandra
 # ENV PATH=$PATH:$SPARK_HOME/bin:$HADOOP_HOME/bin:$KAFKA_HOME/bin:$CASSANDRA_HOME/bin
 
-# # Expose necessary ports (you can add more depending on the configuration)
-# EXPOSE 8080 7077 2181 9092 9042 8081
+# Expose necessary ports (you can add more depending on the configuration)
+EXPOSE 9870
 
 # Start Cassandra as the default entrypoint
 CMD ["bash"]
