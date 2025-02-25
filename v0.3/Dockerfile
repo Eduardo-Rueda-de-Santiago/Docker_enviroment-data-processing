@@ -20,38 +20,31 @@ RUN wget https://dlcdn.apache.org/spark/spark-3.5.4/spark-3.5.4-bin-hadoop3-scal
 
 # Install Apache Hadoop
 RUN wget https://dlcdn.apache.org/hadoop/common/hadoop-3.4.1/hadoop-3.4.1.tar.gz && \
-	tar -xvzf hadoop-3.4.1.tar.gz-C /opt/ && \
+	tar -xvzf hadoop-3.4.1.tar.gz -C /opt/ && \
 	rm hadoop-3.4.1.tar.gz && \
-	mv -s /opt/hadoop-3.4.1 /opt/hadoop && \
-	adduser -D -u 1000 hadoop
+	mv /opt/hadoop-3.4.1 /opt/hadoop
 	
+# Install Apache Kafka
+RUN wget https://dlcdn.apache.org/kafka/3.9.0/kafka_2.13-3.9.0.tgz && \
+	tar -xvzf kafka_2.13-3.9.0.tgz -C /opt/ && \
+	rm kafka_2.13-3.9.0.tgz && \
+	mv /opt/kafka_2.13-3.9.0 /opt/kafka
+
+# Install Cassandra
+RUN wget https://downloads.apache.org/cassandra/4.0.0/apache-cassandra-4.0.0-bin.tar.gz && \
+    tar -xvzf apache-cassandra-4.0.0-bin.tar.gz -C /opt/ && \
+    rm apache-cassandra-4.0.0-bin.tar.gz && \
+    mv /opt/apache-cassandra-4.0.0 /opt/cassandra
+
 # Set up the enviroment
+ENV JAVA_HOME=/usr
 ENV SCALA_HOME=/opt/scala
 ENV SPARK_HOME=/opt/spark
 ENV HADOOP_HOME=/opt/hadoop
-ENV JAVA_HOME=/usr
-ENV PATH="$PATH:$SCALA_HOME:$SPARK_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin"
+ENV KAFKA_HOME=/opt/kafka
+ENV CASSANDRA_HOME=/opt/cassandra
 
-
-
-# # Install Apache Kafka
-# RUN wget https://dlcdn.apache.org/kafka/3.0.0/kafka_2.13-3.0.0.tgz && \
-#     tar -xvzf kafka_2.13-3.0.0.tgz -C /opt/ && \
-#     rm kafka_2.13-3.0.0.tgz && \
-#     ln -s /opt/kafka_2.13-3.0.0 /opt/kafka
-
-# # Install Cassandra
-# RUN wget https://downloads.apache.org/cassandra/4.0.0/apache-cassandra-4.0.0-bin.tar.gz && \
-#     tar -xvzf apache-cassandra-4.0.0-bin.tar.gz -C /opt/ && \
-#     rm apache-cassandra-4.0.0-bin.tar.gz && \
-#     ln -s /opt/apache-cassandra-4.0.0 /opt/cassandra
-
-# # Set up environment variables for all installed tools
-# ENV SPARK_HOME=/opt/spark
-# ENV HADOOP_HOME=/opt/hadoop
-# ENV KAFKA_HOME=/opt/kafka
-# ENV CASSANDRA_HOME=/opt/cassandra
-# ENV PATH=$PATH:$SPARK_HOME/bin:$HADOOP_HOME/bin:$KAFKA_HOME/bin:$CASSANDRA_HOME/bin
+ENV PATH="$PATH:$JAVA_HOME/bin:$SCALA_HOME:$SPARK_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$KAFKA_HOME/bin:$CASSANDRA_HOME/bin"
 
 # Expose necessary ports (you can add more depending on the configuration)
 EXPOSE 9870
