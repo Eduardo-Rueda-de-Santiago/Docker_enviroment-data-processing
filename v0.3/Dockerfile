@@ -48,24 +48,3 @@ ENV PATH="$PATH:$JAVA_HOME/bin:$SCALA_HOME:$SPARK_HOME/bin:$HADOOP_HOME/bin:$HAD
 
 # Expose necessary ports (you can add more depending on the configuration)
 EXPOSE 22 9870 9042 36753 7299 7000
-
-# # Generar claves de SSH
-# RUN rm -rf /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_dsa_key
-# RUN ssh-keygen -A
-# # Install OpenRC and other necessary packages
-# RUN apk add --no-cache openrc
-
-# # Disable OpenRC boot logging (not needed in a container)
-# RUN sed -i 's/#rc_sys=""/rc_sys="lxc"/g' /etc/rc.conf && \
-#     sed -i 's/#rc_logger="YES"/rc_logger="NO"/g' /etc/rc.conf && \
-#     touch /run/openrc/softlevel
-
-# # Start OpenRC services
-# CMD ["/sbin/init"]
-
-# Create and add user
-RUN adduser -S data_processing_user
-USER data_processing_user
-
-# Start Cassandra as the default entrypoint
-CMD ["bash"]
